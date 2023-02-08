@@ -33,6 +33,13 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         user.save()
         return user
 
+    def validate_username(self, value):
+        if value == 'me':
+            raise serializers.ValidationError(
+                'Имя пользователя "me" не разрешено.'
+            )
+        return value
+
 
 class CustomUserSerializer(UserSerializer):
     """

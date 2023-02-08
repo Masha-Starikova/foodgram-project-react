@@ -138,6 +138,22 @@ class RecipeSerializer(serializers.ModelSerializer):
         self.create_tags(validated_data.pop('tags'), instance)
         self.create_ingredients(validated_data.pop('ingredients'), instance)
         return super().update(instance, validated_data)
+    
+    def validate(self, data):
+        ingredients = data['ingredients']
+        ingredients_list = []
+        for ingredient in ingredients:
+            ingredient_id = ingredient['id']
+            if ingredient_id in ingredients_list:
+                raise serializers.ValidationError({
+                    'ingredients': 'Ингредиенты должны быть уникальными'
+                })
+            ingredients_list.append(ingredient_id)
+            amount = ingredient['amount']
+            if int(amount) <= 0:
+                raise serializers.ValidationError({
+                    'amount': 'Количество ингредиентов должно быть больше нуля'
+                })
 
 
 class ShortRecipeSerializer(serializers.ModelSerializer):
