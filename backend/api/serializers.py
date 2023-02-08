@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
+from users.serializers import CustomUserSerializer
 
 User = get_user_model()
 
@@ -58,7 +59,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     Сериализатор для отображения рецептов
     """
     tags = TagSerializer(many=True, read_only=True)
-#   author = CustomUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
     ingredients = serializers.SerializerMethodField(read_only=True)
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
@@ -75,7 +76,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(), many=True)
     ingredients = AddIngredientSerializer(many=True)
-#    author = CustomUserSerializer(read_only=True)
+    author = CustomUserSerializer(read_only=True)
 #    image = Base64ImageField()
 
     class Meta:

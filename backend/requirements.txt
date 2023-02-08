@@ -7,3 +7,4 @@ djangorestframework-simplejwt==4.8.0
 djoser==2.1.0
 pytz==2021.3
 drf-extra-fields==3.4.0
+Pillow
