@@ -1,9 +1,8 @@
 from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework import serializers
-
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
+from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
 User = get_user_model()
@@ -69,7 +68,6 @@ class RecipeListSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = '__all__'
     
-
     def get_ingredients(self, obj):
         queryset = IngredientAmount.objects.filter(recipe=obj)
         return IngredientAmountSerializer(queryset, many=True).data
@@ -103,15 +101,14 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'author', 'ingredients', 'tags', 'image',
             'name', 'text', 'cooking_time')
-    
 
     @staticmethod
     def create_ingredients(ingredients, recipe):
         for ingredient in ingredients:
             IngredientAmount.objects.bulk_create([
                 IngredientAmount(recipe=recipe, ingredient=ingredient['id'],
-                amount=ingredient['amount']), ]
-            )
+                amount=ingredient['amount']), 
+            ])
 
     @staticmethod
     def create_tags(tags, recipe):
@@ -138,10 +135,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         self.create_tags(validated_data.pop('tags'), instance)
         self.create_ingredients(validated_data.pop('ingredients'), instance)
         return super().update(instance, validated_data)
-    
+
     def validate(self, data):
         ingredients = data['ingredients']
-        ingredients_list = []
+        ingredients_list = [ ]
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
@@ -172,7 +169,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ('user', 'recipe')
-    
+
     def to_representation(self, instance):
         request = self.context.get('request')
         context = {'request': request}
