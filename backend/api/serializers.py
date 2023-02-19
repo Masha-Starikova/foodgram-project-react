@@ -7,6 +7,7 @@ from users.serializers import CustomUserSerializer
 
 User = get_user_model()
 
+
 class TagSerializer(serializers.ModelSerializer):
     """
     Сериализатор для тегов
@@ -67,7 +68,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = '__all__'
-    
+
     def get_ingredients(self, obj):
         queryset = IngredientAmount.objects.filter(recipe=obj)
         return IngredientAmountSerializer(queryset, many=True).data
@@ -107,7 +108,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         for ingredient in ingredients:
             IngredientAmount.objects.bulk_create([
                 IngredientAmount(recipe=recipe, ingredient=ingredient['id'],
-                amount=ingredient['amount']), 
+                    amount=ingredient['amount']), 
             ])
 
     @staticmethod
@@ -138,7 +139,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         ingredients = data['ingredients']
-        ingredients_list = [ ]
+        ingredients_list = []
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
