@@ -37,7 +37,7 @@ services:
       - frontend
 
   frontend:
-    image: mastan23/foodgram_f:v1
+    image: mastan23/foodgram_f:v2
     volumes:
       - ../frontend/:/app/result_build/
 

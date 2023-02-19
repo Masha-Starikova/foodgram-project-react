@@ -34,3 +34,24 @@ cd foodgram-project-react
 
     Cоздать и активировать виртуальное окружение:
     ```
+    python -m venv venv
+    ```
+    ```
+    source venv/bin/activate
+    ```
+    
+    Перейти в директирию и установить зависимости из файла requirements.txt:
+    ```
+    cd backend/
+    pip install -r requirements.txt
+    ```
+
+    Выполните миграции:
+    ```
+    python manage.py migrate
+    ```
+
+    Запустите сервер:
+     ```
+    python manage.py runserver
+    ```
