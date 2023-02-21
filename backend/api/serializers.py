@@ -52,7 +52,7 @@ class AddIngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IngredientAmount
-        fields = ('id', 'amount')
+        fields = '__all__'
 
 
 class RecipeListSerializer(serializers.ModelSerializer):
@@ -99,9 +99,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = (
-            'id', 'author', 'ingredients', 'tags', 'image',
-            'name', 'text', 'cooking_time')
+        fields = '__all__'
 
     @staticmethod
     def create_ingredients(ingredients, recipe):
