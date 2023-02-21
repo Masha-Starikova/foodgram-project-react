@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for row in DictReader(open('./data/ingredients.csv'), delimiter=","):
-            ingredient=Ingredient(
+            ingredient = Ingredient(
                 name=row['name'], measurement_unit=row['measurement_unit']
             )
             ingredient.save()
