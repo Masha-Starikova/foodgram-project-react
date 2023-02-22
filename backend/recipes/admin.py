@@ -39,7 +39,6 @@ class RecipeAdmin(admin.ModelAdmin):
         return "\n".join([i[0] for i in obj.ingredients.values_list('name')])
 
 
-
 @admin.register(IngredientAmount)
 class IngredientAmountAdmin(admin.ModelAdmin):
     list_display = ('id', 'ingredient', 'recipe', 'amount',)

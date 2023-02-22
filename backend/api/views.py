@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import Ingredient, IngredientAmount, Recipe, Tag
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -10,20 +11,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
-                            ShoppingCart, Tag)
-
 from .filters import IngredientSearchFilter, RecipeFilter
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
-                          RecipeListSerializer, RecipeSerializer,
+                          RecipeListSerializer, RecipeSerializer, ShoppingCart,
                           ShoppingCartSerializer, TagSerializer)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
     """
-    ViewSet для работы с тегами.
+    Вьюсет для работы с тегами.
     Добавить тег может администратор.
     """
     queryset = Tag.objects.all()
@@ -33,7 +31,7 @@ class TagsViewSet(ReadOnlyModelViewSet):
 
 class IngredientsViewSet(ReadOnlyModelViewSet):
     """
-    ViewSet для работы с ингредиентами.
+    Вьюсет для работы с ингредиентами.
     Добавить ингредиент может администратор.
     """
     queryset = Ingredient.objects.all()
@@ -45,7 +43,7 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
 
 class RecipeViewSet(ModelViewSet):
     """
-    ViewSet для работы с рецептами.
+    Вьюсет для работы с рецептами.
     Для анонимов разрешен только просмотр рецептов.
     """
     queryset = Recipe.objects.all()
@@ -59,10 +57,8 @@ class RecipeViewSet(ModelViewSet):
             return RecipeListSerializer
         return RecipeSerializer
 
-    def get_serializer_class(self):
-        if self.action in ('list', 'retrieve'):
-            return RecipeListSerializer
-        return RecipeSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
     @staticmethod
     def post_method_for_actions(request, pk, serializers):
@@ -85,11 +81,6 @@ class RecipeViewSet(ModelViewSet):
     def favorite(self, request, pk):
         return self.post_method_for_actions(
             request=request, pk=pk, serializers=FavoriteSerializer)
-
-    @favorite.mapping.delete
-    def delete_favorite(self, request, pk):
-        return self.delete_method_for_actions(
-            request=request, pk=pk, model=Favorite)
 
     @action(detail=True, methods=["POST"],
             permission_classes=[IsAuthenticated])
