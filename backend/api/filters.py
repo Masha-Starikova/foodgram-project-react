@@ -24,7 +24,8 @@ class RecipeFilter(FilterSet):
 
     def filter_tags(self, queryset, name, value):
         if value:
-            return queryset.filter(tags__slug__in=self.data.getlist('tags')).distinct()
+            return queryset.filter(
+                tags__slug__in=self.data.getlist('tags')).distinct()
         return queryset
 
     def filter_is_favorited(self, queryset, name, value):
