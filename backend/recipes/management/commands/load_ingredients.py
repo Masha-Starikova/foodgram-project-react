@@ -1,6 +1,6 @@
 from csv import DictReader
 
-from django.core.management.base import BaseCommand
+from django.core.management import BaseCommand
 
 from recipes.models import Ingredient
 
@@ -11,7 +11,7 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        for row in DictReader(open('./data/ingredients.csv'), delimiter=","):
+        for row in DictReader(open('./data/ingredients.csv'), delimiter=";"):
             ingredient = Ingredient(
                 name=row['name'], measurement_unit=row['measurement_unit']
             )

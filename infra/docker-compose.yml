@@ -10,7 +10,7 @@ services:
       - ./.env
 
   backend:
-    image: mastan23/foodgram_b:v1
+    image: mastan23/foodgram_b:v4
     expose:
       - 8000
     restart: always
