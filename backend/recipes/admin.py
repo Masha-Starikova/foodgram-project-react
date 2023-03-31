@@ -53,7 +53,7 @@ class FavoriteAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-@admin.register(ShoppingCart)
-class ShoppingCartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'recipe',)
-    empty_value_display = '-пусто-'
+#@admin.register(ShoppingCart)
+#class ShoppingCartAdmin(admin.ModelAdmin):
+#    list_display = ('id', 'user', 'recipe',)
+#    empty_value_display = '-пусто-'
