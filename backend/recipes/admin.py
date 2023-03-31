@@ -2,12 +2,14 @@ from django.contrib import admin
 
 from .models import (Favorite, Ingredient, IngredientAmount, Recipe,
                      ShoppingCart, Tag)
+from .forms import TagForm
 
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug',)
     empty_value_display = '-пусто-'
+    form = TagForm
 
 
 @admin.register(Ingredient)
@@ -51,7 +53,7 @@ class FavoriteAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
 
 
-@admin.register(ShoppingCart)
-class ShoppingCartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'recipe',)
-    empty_value_display = '-пусто-'
+#@admin.register(ShoppingCart)
+#class ShoppingCartAdmin(admin.ModelAdmin):
+#    list_display = ('id', 'user', 'recipe',)
+#    empty_value_display = '-пусто-'
