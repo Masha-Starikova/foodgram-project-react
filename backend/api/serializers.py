@@ -1,4 +1,4 @@
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
@@ -161,7 +161,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.tags.clear()
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
-        IngredientToRecipe.objects.filter(recipe=instance).delete()
+        IngredientAmount.objects.filter(recipe=instance).delete()
         self.add_ingredients(ingredients, instance)
         instance.tags.set(tags)
         return super().update(instance, validated_data)
