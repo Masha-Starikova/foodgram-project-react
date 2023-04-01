@@ -23,7 +23,7 @@ class IngredientAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'author', 'amount_favorites',
                     'amount_tags', 'amount_ingredients',)
-    list_filter = ('author', 'name', 'tags',)
+    list_filter = ('author', 'name', 'tags', 'ingredients',)
     search_fields = ('name',)
     empty_value_display = '-пусто-'
 
