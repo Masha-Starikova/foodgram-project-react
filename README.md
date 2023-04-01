@@ -34,7 +34,7 @@ cd foodgram-project-react
 
     Cоздать и активировать виртуальное окружение:
     ```
-    python -m venv venv
+    python3 -m venv venv
     ```
     ```
     source venv/bin/activate
