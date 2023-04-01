@@ -8,10 +8,7 @@ services:
       - ./.env
 
   backend:
-    image: mastan23/foodgram_b:v14
-    build:
-      context: ../backend
-
+    image: mastan23/foodgram_b:v11.4
     expose:
       - 8000
     restart: always
@@ -25,9 +22,6 @@ services:
 
   frontend:
     image: mastan23/foodgram_f:v3
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
