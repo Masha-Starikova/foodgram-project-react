@@ -1,6 +1,6 @@
 # praktikum_new_diplom
 ### Foodgram - Продуктовый помощник
-![example event parameter](https://github.com/Masha-Starikova/foodgram-project-react/actions/badge.svg?event=push)
+![example event parameter](https://github.com/Masha-Starikova/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?event=push)
 
 ## Описание проекта
 Foodgram это ресурс для публикации рецептов.  
