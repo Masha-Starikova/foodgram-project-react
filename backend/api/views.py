@@ -2,13 +2,12 @@ from django.http import HttpResponse
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import Ingredient, IngredientAmount, Recipe, Tag, Favorite
-
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from recipes.models import Ingredient, IngredientAmount, Recipe, Tag, Favorite
 
 from .filters import IngredientSearchFilter, RecipeFilter
 from .pagination import CustomPageNumberPagination
@@ -101,7 +100,7 @@ class RecipeViewSet(ModelViewSet):
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         """Метод для скачивания списка покупок."""
-        FILENAME = 'shopping_cart.txt'
+        filename = 'shopping_cart.txt'
         ingredients = IngredientAmount.objects.filter(
             recipe__carts__user=request.user
         ).values(
@@ -114,9 +113,9 @@ class RecipeViewSet(ModelViewSet):
                 f'{ingredient["ingredient__name"]}'
                 f' ({ingredient["ingredient__measurement_unit"]})'
                 f' — {ingredient["amount"]}\r\n'
-                )
+            )
         response = HttpResponse(
             content, content_type='text/plain,charser=utf8'
         )
-        response['Content-Disposition'] = f'attacment; filename={FILENAME}'
+        response['Content-Disposition'] = f'attacment; filename={filename}'
         return response
