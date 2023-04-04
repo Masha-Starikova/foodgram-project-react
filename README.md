@@ -52,3 +52,9 @@ docker-compose exec backend python manage.py createsuperuser
 ```bash
 docker-compose exec backend python manage.py collectstatic --noinput
 ```
+
+### админ
+```
+почта: starikova.11@bk.ru
+пароль: masha1masha
+```
