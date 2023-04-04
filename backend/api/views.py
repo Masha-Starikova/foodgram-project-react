@@ -1,10 +1,9 @@
+from django.http import HttpResponse
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from recipes.models import Ingredient, IngredientAmount, Recipe, Tag, Favorite
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfgen import canvas
+
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -98,13 +97,26 @@ class RecipeViewSet(ModelViewSet):
         return self.delete_method_for_actions(
             request=request, pk=pk, model=ShoppingCart)
 
-    @action(detail=False, methods=['get'],
+    @action(detail=False, methods=['GET'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         """Метод для скачивания списка покупок."""
+        FILENAME = 'shopping_cart.txt'
         ingredients = IngredientAmount.objects.filter(
-            recipes__shopping_cart__user=request.user
+            recipe__carts__user=request.user
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
         ).annotate(amount=Sum('amount'))
+        content = ''
+        for ingredient in ingredients:
+            content += (
+                f'{ingredient["ingredient__name"]}'
+                f' ({ingredient["ingredient__measurement_unit"]})'
+                f' — {ingredient["amount"]}\r\n'
+                )
+        response = HttpResponse(
+            content, content_type='text/plain,charser=utf8'
+        )
+        response['Content-Disposition'] = f'attacment; filename={FILENAME}'
+        return response

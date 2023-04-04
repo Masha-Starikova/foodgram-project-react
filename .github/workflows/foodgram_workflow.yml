@@ -48,7 +48,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_b:v11.4
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_b:v4.20
 
   deploy:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
