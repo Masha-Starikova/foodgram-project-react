@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
-from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
 User = get_user_model()
@@ -72,17 +73,17 @@ class RecipeListSerializer(serializers.ModelSerializer):
     """
     tags = TagSerializer(many=True, read_only=True)
     author = CustomUserSerializer(read_only=True)
-    ingredients = serializers.SerializerMethodField(read_only=True)
+    ingredients = IngredientAmountSerializer(
+        read_only=True,
+        many=True,
+        source='ingredient.recipe'
+    )
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Recipe
         fields = '__all__'
-
-    def get_ingredients(self, obj):
-        queryset = IngredientAmount.objects.filter(recipe=obj)
-        return IngredientAmountSerializer(queryset, many=True).data
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
@@ -137,12 +138,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     def add_ingredients(self, ingredients, recipe):
-        for ingredient in ingredients:
-            IngredientAmount.objects.get_or_create(
-                ingredient_id=ingredient['ingredient']['id'],
-                amount=ingredient['amount'],
-                recipe=recipe
-            )
+        ingredients_list = [IngredientAmount(
+            ingredient_id=ingredient['ingredient']['id'],
+            amount=ingredient['amount'],
+            recipe=recipe
+        ) for ingredient in ingredients]
+        IngredientAmount.objects.bulk_create(ingredients_list)
+
 
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')

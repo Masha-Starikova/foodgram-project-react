@@ -2,13 +2,13 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import Favorite, Ingredient, IngredientAmount, Recipe, Tag
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
+from recipes.models import Favorite, Ingredient, IngredientAmount, Recipe, Tag
 from .filters import IngredientSearchFilter, RecipeFilter
 from .pagination import CustomPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
@@ -106,13 +106,13 @@ class RecipeViewSet(ModelViewSet):
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
-        ).annotate(amount=Sum('amount'))
+        ).annotate(totle=Sum('amount'))
         content = ''
         for ingredient in ingredients:
             content += (
                 f'{ingredient["ingredient__name"]}'
                 f' ({ingredient["ingredient__measurement_unit"]})'
-                f' — {ingredient["amount"]}\r\n'
+                f' — {ingredient["totle"]}\r\n'
             )
         response = HttpResponse(
             content, content_type='text/plain,charser=utf8'
