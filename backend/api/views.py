@@ -106,13 +106,13 @@ class RecipeViewSet(ModelViewSet):
         ).values(
             'ingredient__name',
             'ingredient__measurement_unit'
-        ).annotate(totle=Sum('amount'))
+        ).annotate(total=Sum('amount'))
         content = ''
         for ingredient in ingredients:
             content += (
                 f'{ingredient["ingredient__name"]}'
                 f' ({ingredient["ingredient__measurement_unit"]})'
-                f' — {ingredient["totle"]}\r\n'
+                f' — {ingredient["total"]}\r\n'
             )
         response = HttpResponse(
             content, content_type='text/plain,charser=utf8'
