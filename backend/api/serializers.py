@@ -76,7 +76,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     ingredients = IngredientAmountSerializer(
         read_only=True,
         many=True,
-        source='ingredient.recipe'
+        source='amounts'
     )
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
