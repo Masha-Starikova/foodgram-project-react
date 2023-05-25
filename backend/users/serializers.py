@@ -2,7 +2,6 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
 from recipes.models import Recipe
-
 from .models import Follow, User
 
 
@@ -32,6 +31,13 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def validate_username(self, value):
+        if value == 'me':
+            raise serializers.ValidationError(
+                'Имя пользователя "me" не разрешено.'
+            )
+        return value
 
 
 class CustomUserSerializer(UserSerializer):

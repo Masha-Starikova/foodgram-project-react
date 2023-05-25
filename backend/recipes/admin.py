@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from .forms import TagForm
 from .models import (Favorite, Ingredient, IngredientAmount, Recipe,
                      ShoppingCart, Tag)
 
@@ -8,6 +9,7 @@ from .models import (Favorite, Ingredient, IngredientAmount, Recipe,
 class TagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug',)
     empty_value_display = '-пусто-'
+    form = TagForm
 
 
 @admin.register(Ingredient)
@@ -22,7 +24,7 @@ class IngredientAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'author', 'amount_favorites',
                     'amount_tags', 'amount_ingredients',)
-    list_filter = ('author', 'name', 'tags',)
+    list_filter = ('author', 'name', 'tags', 'ingredients',)
     search_fields = ('name',)
     empty_value_display = '-пусто-'
 
@@ -37,7 +39,6 @@ class RecipeAdmin(admin.ModelAdmin):
     @staticmethod
     def amount_ingredients(obj):
         return "\n".join([i[0] for i in obj.ingredients.values_list('name')])
-
 
 
 @admin.register(IngredientAmount)
