@@ -24,6 +24,7 @@ http://158.160.18.83:80
 
 ### Разработчики:
 [Старикова М.А.](https://github.com/Masha-Starikova) - Python разработчик. Разработал бэкенд и деплой для сервиса Recipe 
+
 [Яндекс.Практикум](https://github.com/yandex-praktikum) Фронтенд для сервиса Foodgram.
 
 ### Запуск проекта.
